@@ -1,0 +1,36 @@
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Instrument Sans", ui-sans-serif, system-ui, sans-serif;
+  
+  --color-aurix-bg: #e4e5e9;
+  --color-aurix-ink: #585858;
+  --color-aurix-muted: #797979;
+  --color-aurix-border: rgba(0, 0, 0, 0.08);
+  --color-aurix-accent: #000000;
+}
+
+@layer base {
+  body {
+    @apply bg-aurix-bg text-aurix-ink font-sans antialiased;
+  }
+}
+
+@layer components {
+  .glass-panel {
+    @apply bg-white/40 backdrop-blur-xl border border-white/20 shadow-[0_8px_32px_0_rgba(31,38,135,0.07)];
+  }
+  
+  .institutional-card {
+    @apply border border-aurix-border bg-white/50 backdrop-blur-sm p-8 transition-all duration-500;
+  }
+  
+  .institutional-card:hover {
+    @apply border-aurix-ink/20 bg-white shadow-2xl translate-y-[-2px];
+  }
+
+  .nav-link {
+    @apply text-sm font-medium text-aurix-muted hover:text-aurix-ink transition-all duration-300 relative after:content-[''] after:absolute after:bottom-[-4px] after:left-0 after:w-0 after:h-[1px] after:bg-aurix-ink after:transition-all hover:after:w-full;
+  }
+}

@@ -1,0 +1,5 @@
+{
+  "name": "AURIX",
+  "description": "A vault-based capital allocator embedded in global commodities markets",
+  "requestFramePermissions": []
+}
