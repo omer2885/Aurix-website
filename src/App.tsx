@@ -95,7 +95,7 @@ const AllocationIllustration = () => {
                 transition={{ duration: 0.6, ease: "easeOut" }}
               />
               <motion.image
-                href="/Favicon_Aurix.png"
+                href="/Favicon_Aurix.webp"
                 initial={false}
                 animate={{
                   x: centerX - (32 * (isActive ? 1 : 0.5)) / 2,
@@ -270,7 +270,7 @@ const RiskIllustration = () => {
 
           {/* Aurix Canonical Emblem Locked in the Hub */}
           <div className="absolute z-10 flex items-center justify-center pointer-events-none">
-             <img src="/Favicon_Aurix.png" alt="Aurix System" className="w-[14px] h-[14px]" style={{ filter: 'invert(1) brightness(100)' }} />
+             <img src="/Favicon_Aurix.webp" alt="Aurix System" className="w-[14px] h-[14px]" style={{ filter: 'invert(1) brightness(100)' }} />
           </div>
        </div>
     </div>
@@ -681,7 +681,7 @@ export default function App() {
                 >
                   <div 
                     className="absolute inset-0 bg-cover bg-center transition-transform duration-1000 group-hover:scale-110" 
-                    style={{ backgroundImage: `url('/${item.title}.png')` }}
+                    style={{ backgroundImage: `url('/${item.title}.webp')` }}
                   />
                   
                   <div className="relative z-10 transform -translate-y-2 group-hover:translate-y-0 transition-transform duration-500">
@@ -804,7 +804,7 @@ export default function App() {
                 >
                   <div 
                     className="absolute inset-0 bg-cover bg-center transition-transform duration-1000 group-hover:scale-110" 
-                    style={{ backgroundImage: `url('/Structured by quant Grid/${item.id}.png')` }}
+                    style={{ backgroundImage: `url('/Structured by quant Grid/${item.id}.webp')` }}
                   />
                   <div className="absolute inset-0 bg-white/5 group-hover:bg-transparent transition-colors duration-700" />
                 </div>
@@ -856,7 +856,7 @@ export default function App() {
             <div className="relative group">
               <div className="aspect-[4/3] overflow-hidden flex items-center justify-center">
                 <img 
-                  src="/Understanding the valut participation.png" 
+                  src="/Understanding the valut participation.webp" 
                   alt="Vault participation mechanics" 
                   className="w-full h-full object-contain transition-transform duration-1000 group-hover:scale-105"
                 />
@@ -1110,7 +1110,7 @@ export default function App() {
             {/* Cinematic Background */}
             <div 
               className="absolute inset-0 bg-cover bg-center" 
-              style={{ backgroundImage: "url('/CTA.png')" }}
+              style={{ backgroundImage: "url('/CTA.webp')" }}
             />
             <div className="absolute inset-0 bg-aurix-bg/5" />
 
