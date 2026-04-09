@@ -95,8 +95,10 @@ const AllocationIllustration = () => {
                 transition={{ duration: 0.6, ease: "easeOut" }}
               />
               <motion.image
-                href="/Favicon_Aurix.webp"
+                href="/Favicon_Aurix.png"
                 initial={false}
+                loading="lazy"
+                decoding="async"
                 animate={{
                   x: centerX - (32 * (isActive ? 1 : 0.5)) / 2,
                   y: centerY - (32 * (isActive ? 1 : 0.5)) / 2,
@@ -270,7 +272,7 @@ const RiskIllustration = () => {
 
           {/* Aurix Canonical Emblem Locked in the Hub */}
           <div className="absolute z-10 flex items-center justify-center pointer-events-none">
-             <img src="/Favicon_Aurix.webp" alt="Aurix System" className="w-[14px] h-[14px]" style={{ filter: 'invert(1) brightness(100)' }} />
+             <img src="/Favicon_Aurix.png" alt="Aurix System" className="w-[14px] h-[14px]" loading="lazy" decoding="async" style={{ filter: 'invert(1) brightness(100)' }} />
           </div>
        </div>
     </div>
@@ -468,7 +470,7 @@ const Navbar = () => {
     <nav className="absolute top-0 left-0 right-0 z-50 px-8 md:px-16 py-8 bg-transparent transition-all duration-500">
       <div className="max-w-[1600px] mx-auto flex items-center justify-between">
         <div className="flex items-center">
-          <img src="/aurix-logo.svg" alt="AURIX" className="h-6 w-auto" />
+          <img src="/aurix-logo.svg" alt="AURIX" className="h-6 w-auto" loading="eager" decoding="sync" fetchpriority="high" />
         </div>
 
         {/* Desktop Nav */}
@@ -525,10 +527,75 @@ const Navbar = () => {
   );
 };
 
+const Preloader = ({ progress }: { progress: number }) => {
+  return (
+    <motion.div 
+      initial={{ opacity: 1 }}
+      exit={{ y: '-100%', opacity: 0 }}
+      transition={{ duration: 0.8, ease: [0.76, 0, 0.24, 1] }}
+      className="fixed inset-0 z-[100] bg-aurix-bg flex flex-col items-center justify-center pointer-events-none"
+    >
+      <div className="relative flex flex-col items-center">
+        <motion.div
+           initial={{ opacity: 0, y: 10 }}
+           animate={{ opacity: 1, y: 0 }}
+           transition={{ duration: 1, ease: "easeOut" }}
+           className="mb-12"
+        >
+          <img src="/aurix-logo.svg" alt="AURIX" className="h-10 w-auto" />
+        </motion.div>
+        
+        <div className="w-48 h-[1px] bg-aurix-ink/10 relative overflow-hidden">
+          <motion.div 
+            className="absolute top-0 left-0 h-full bg-aurix-ink"
+            style={{ width: `${progress}%` }}
+            transition={{ ease: "linear" }}
+          />
+        </div>
+        
+        <motion.span 
+          className="mt-6 text-[10px] font-bold uppercase tracking-[0.4em] text-aurix-ink/40"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+        >
+          {progress}%
+        </motion.span>
+      </div>
+    </motion.div>
+  );
+};
+
 export default function App() {
+  const [isLoading, setIsLoading] = useState(true);
+  const [progress, setProgress] = useState(0);
+
+  useEffect(() => {
+    let timer: any;
+    if (progress < 100) {
+      const step = progress < 30 ? 0.8 : progress < 70 ? 1.5 : 2;
+      timer = setTimeout(() => {
+        setProgress(Math.min(100, progress + step));
+      }, progress < 80 ? 30 : 15);
+    } else {
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 800);
+    }
+    return () => clearTimeout(timer);
+  }, [progress]);
+
   return (
     <div className="min-h-screen selection:bg-aurix-ink selection:text-white bg-aurix-bg text-aurix-ink">
-      <Navbar />
+      <AnimatePresence mode="wait">
+        {isLoading && <Preloader key="preloader" progress={Math.round(progress)} />}
+      </AnimatePresence>
+
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: isLoading ? 0 : 1 }}
+        transition={{ duration: 1, delay: 0.2 }}
+      >
+        <Navbar />
 
       {/* Hero Section */}
       <section className="relative min-h-screen flex flex-col justify-center px-8 md:px-16 pt-32 pb-12 overflow-hidden bg-transparent">
@@ -539,9 +606,11 @@ export default function App() {
             muted 
             loop 
             playsInline 
+            preload="metadata"
+            style={{ backgroundColor: "#e4e5e9" }}
             className="absolute inset-0 w-full h-full object-cover z-[-5]"
           >
-            <source src="/Hero Video.mp4" type="video/mp4" />
+            <source src="/Hero Video.mp4" type="video/mp4" fetchpriority="low" />
           </video>
         </div>
 
@@ -553,7 +622,7 @@ export default function App() {
               transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
               className="max-w-xl"
             >
-              <h1 className="text-4xl md:text-[50px] font-bold tracking-tight leading-[1.05] mb-5 text-aurix-ink">
+              <h1 className="text-3xl md:text-5xl lg:text-[50px] font-bold tracking-tight leading-[1.05] mb-5 text-aurix-ink">
                 A vault-based capital allocator embedded in global commodities markets
               </h1>
               <p className="text-base md:text-lg text-aurix-muted mb-10 leading-relaxed font-medium">
@@ -858,6 +927,8 @@ export default function App() {
                 <img 
                   src="/Understanding the valut participation.webp" 
                   alt="Vault participation mechanics" 
+                  loading="lazy"
+                  decoding="async"
                   className="w-full h-full object-contain transition-transform duration-1000 group-hover:scale-105"
                 />
               </div>
@@ -997,10 +1068,10 @@ export default function App() {
       <section className="py-10 md:py-16 px-8 md:px-16 bg-transparent border-y border-aurix-border relative overflow-hidden">
         <BackgroundBlurs />
         <div className="max-w-[1600px] mx-auto relative z-10">
-          <div className="text-center mb-16">
-            <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-aurix-muted mb-6 block">Transparency</span>
-            <h2 className="text-4xl md:text-4xl font-bold mb-6 tracking-tight">Visibility into capital</h2>
-            <p className="text-base md:text-lg text-aurix-muted max-w-2xl mx-auto leading-relaxed font-medium">
+          <div className="text-left mb-16">
+            <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-aurix-muted mb-6 block text-left">Transparency</span>
+            <h2 className="text-4xl md:text-4xl font-bold mb-6 tracking-tight text-left">Visibility into capital</h2>
+            <p className="text-base md:text-lg text-aurix-muted max-w-2xl leading-relaxed font-medium text-left">
               AURIX provides continuous insight into how capital is deployed. The foundation of trust is transparency.
             </p>
           </div>
@@ -1010,7 +1081,7 @@ export default function App() {
             <div className="lg:col-span-8 institutional-card relative overflow-hidden group min-h-[350px] flex flex-col justify-between">
               <div className="relative z-10">
                 <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-aurix-muted mb-4 block">Deployment Architecture</span>
-                <h3 className="text-2xl font-bold mb-4 tracking-tight">Current strategy allocation</h3>
+                <h3 className="text-2xl font-bold mb-4 tracking-tight">Current Strategy Allocation</h3>
                 <p className="text-aurix-muted text-base leading-relaxed font-medium max-w-xl">
                   Capital is dynamically allocated across basis, relative value, and liquidity strategies focusing on risk-adjusted returns.
                 </p>
@@ -1022,7 +1093,7 @@ export default function App() {
             <div className="lg:col-span-4 institutional-card relative overflow-hidden group min-h-[350px] flex flex-col justify-between">
               <div className="relative z-10">
                 <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-aurix-muted mb-4 block">Audited Growth</span>
-                <h3 className="text-2xl font-bold mb-4 tracking-tight">Historical performance</h3>
+                <h3 className="text-2xl font-bold mb-4 tracking-tight">Historical Performance</h3>
                 <p className="text-aurix-muted text-sm leading-relaxed font-medium">
                   Verified returns reflected directly in the vault Net Asset Value through real execution.
                 </p>
@@ -1034,7 +1105,7 @@ export default function App() {
             <div className="lg:col-span-5 institutional-card relative overflow-hidden group min-h-[350px] flex flex-col justify-between">
               <div className="relative z-10 lg:max-w-[60%]">
                 <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-aurix-muted mb-4 block">Security Layer</span>
-                <h3 className="text-2xl font-bold mb-4 tracking-tight">Risk metrics</h3>
+                <h3 className="text-2xl font-bold mb-4 tracking-tight">Risk Metrics</h3>
                 <p className="text-aurix-muted text-sm leading-relaxed font-medium">
                   Continuous monitoring of drawdown limits, strategy caps, and execution boundaries.
                 </p>
@@ -1046,7 +1117,7 @@ export default function App() {
             <div className="lg:col-span-7 institutional-card relative overflow-hidden group min-h-[350px] flex flex-col justify-between">
               <div className="relative z-10">
                 <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-aurix-muted mb-4 block">Global Connectivity</span>
-                <h3 className="text-2xl font-bold mb-4 tracking-tight">Capital distribution</h3>
+                <h3 className="text-2xl font-bold mb-4 tracking-tight">Capital Distribution</h3>
                 <p className="text-aurix-muted text-base leading-relaxed font-medium max-w-xl">
                   Real-time visibility into capital flow across decentralized venues and traditional commodities markets.
                 </p>
@@ -1122,7 +1193,7 @@ export default function App() {
                 className="flex flex-col items-center"
               >
                 <div className="mb-12">
-                  <img src="/aurix-logo.svg" alt="AURIX" className="h-10 w-auto" />
+                  <img src="/aurix-logo.svg" alt="AURIX" className="h-10 w-auto" loading="lazy" decoding="async" />
                 </div>
                 
                 <h2 className="text-4xl md:text-[64px] font-bold tracking-tight mb-16 leading-[1] max-w-4xl text-aurix-ink">
@@ -1155,7 +1226,7 @@ export default function App() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-24 mb-24">
             <div>
               <div className="mb-8">
-                <img src="/aurix-logo.svg" alt="AURIX" className="h-8 w-auto" style={{ filter: 'invert(1) brightness(100)' }} />
+                <img src="/aurix-logo.svg" alt="AURIX" className="h-8 w-auto" loading="lazy" decoding="async" style={{ filter: 'invert(1) brightness(100)' }} />
               </div>
               <p className="text-sm max-w-md leading-relaxed font-medium text-white/70">
                 AURIX is a vault based capital allocation protocol operating across global commodities markets. Participation involves exposure to market risk and variable performance outcomes.
@@ -1193,6 +1264,7 @@ export default function App() {
           </div>
         </div>
       </footer>
+      </motion.div>
     </div>
   );
 }
