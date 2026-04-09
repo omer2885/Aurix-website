@@ -617,7 +617,7 @@ export default function App() {
 
           <div className="flex-1 flex flex-col justify-center pb-8 md:pb-24">
             <div className="max-w-[1600px] mx-auto w-full relative z-10 lg:grid lg:grid-cols-2 gap-12 items-center">
-            <motion.div
+              <motion.div
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
@@ -625,9 +625,9 @@ export default function App() {
               >
                 {/* Mobile Hero Image */}
                 <div className="block md:hidden mb-16 mt-10">
-                  <img 
-                    src="/Hero Visual-Phone.png" 
-                    alt="AURIX Visual" 
+                  <img
+                    src="/Hero Visual-Phone.png"
+                    alt="AURIX Visual"
                     className="w-full h-auto scale-[1.25] origin-center"
                   />
                 </div>
@@ -1050,7 +1050,7 @@ export default function App() {
                   </p>
                   <div className="pt-8 border-t border-aurix-border">
                     <p className="text-aurix-ink font-bold italic text-xl leading-tight">
-                      There is only disciplined execution within defined boundaries and no assumption of constant returns.
+                      *There is only disciplined execution within defined boundaries and no assumption of constant returns.
                     </p>
                   </div>
                 </div>
